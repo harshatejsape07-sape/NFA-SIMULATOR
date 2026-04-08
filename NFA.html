@@ -1,0 +1,91 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>NFA Visualizer | Theory of Computation</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link
+        href="https://fonts.googleapis.com/css2?family=Outfit:wght@300;400;600;800&family=JetBrains+Mono:wght@400;700&display=swap"
+        rel="stylesheet">
+    <link rel="stylesheet" href="style.css">
+</head>
+
+<body>
+    <div class="background-effects">
+        <div class="glow-orb orb-1"></div>
+        <div class="glow-orb orb-2"></div>
+    </div>
+
+    <main class="container">
+        <header>
+            <h1>NFA Simulator</h1>
+            <p id="nfa-description">Nondeterministic Finite Automaton testing if a string contains
+                <strong>"01"</strong>.</p>
+            <div class="selector-container">
+                <label for="example-selector">Choose Example:</label>
+                <select id="example-selector" class="example-selector">
+                    <option value="contains-01">Pattern: Contains "01"</option>
+                    <option value="ends-11">Pattern: Ends with "11"</option>
+                    <option value="even-zeros">Pattern: Even number of 0s</option>
+                </select>
+            </div>
+        </header>
+
+        <div class="glass-panel control-panel">
+            <div class="input-group">
+                <input type="text" id="string-input" placeholder="Enter binary string (e.g., 10010)" pattern="[01]*">
+                <button id="btn-play" class="btn primary-btn">Simulate</button>
+                <button id="btn-step" class="btn secondary-btn">Step</button>
+                <button id="btn-reset" class="btn danger-btn">Reset</button>
+            </div>
+
+            <div class="tape-container">
+                <div class="tape" id="tape">
+                    <!-- tape symbols generated here -->
+                </div>
+                <div class="tape-pointer" id="tape-pointer">^</div>
+            </div>
+        </div>
+
+        <div class="glass-panel graph-panel">
+            <div class="graph-container">
+                <!-- SVG for Transitions -->
+                <svg class="transitions-layer" id="svg-layer" width="600" height="300" viewBox="0 0 600 300">
+                    <defs>
+                        <marker id="arrow" markerWidth="10" markerHeight="10" refX="28" refY="5"
+                            orient="auto-start-reverse">
+                            <path d="M 0 0 L 10 5 L 0 10 z" fill="rgba(255,255,255,0.4)" />
+                        </marker>
+                        <marker id="arrow-active" markerWidth="10" markerHeight="10" refX="28" refY="5"
+                            orient="auto-start-reverse">
+                            <path d="M 0 0 L 10 5 L 0 10 z" fill="#00f3ff" />
+                        </marker>
+                    </defs>
+                    <!-- Dynamic transitions go here -->
+                </svg>
+
+                <!-- HTML Nodes -->
+                <div class="nodes-layer" id="nodes-layer">
+                    <!-- Dynamic nodes go here -->
+                </div>
+            </div>
+
+            <div class="status-indicator">
+                <h2 id="final-status">Awaiting Input...</h2>
+            </div>
+        </div>
+
+        <div class="glass-panel history-panel">
+            <h3>History</h3>
+            <div id="history" class="history-container">
+                <p class="history-entry system">No strings tested yet.</p>
+            </div>
+        </div>
+    </main>
+    <script src="app.js"></script>
+</body>
+
+</html>
