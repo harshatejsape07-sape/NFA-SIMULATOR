@@ -1,431 +1,336 @@
-// NFA Definitions Collection
-const nfaCollection = {
-    'contains-01': {
-        name: 'Contains "01"',
-        description: 'Nondeterministic Finite Automaton testing if a string contains <strong>"01"</strong>.',
-        pattern: '[01]*',
-        logic: {
-            states: ['q0', 'q1', 'q2'],
-            startState: 'q0',
-            acceptStates: new Set(['q2']),
-            transitions: {
-                'q0': { '0': ['q0', 'q1'], '1': ['q0'] },
-                'q1': { '0': [], '1': ['q2'] },
-                'q2': { '0': ['q2'], '1': ['q2'] }
-            }
-        },
-        layout: {
-            nodes: [
-                { id: 'q0', x: 150, y: 150, title: 'q0', accept: false },
-                { id: 'q1', x: 300, y: 150, title: 'q1', accept: false },
-                { id: 'q2', x: 480, y: 150, title: 'q2', accept: true }
-            ],
-            edges: [
-                { id: 'entry', type: 'forward', from: null, to: 'q0', label: '', edgeClass: 'entry', d: 'M 50 150 L 100 150' },
-                { id: 'q0-loop', type: 'loop', from: 'q0', to: 'q0', label: '0, 1', edgeClass: 'q0-loop', d: 'M 120 120 C 80 40, 160 40, 120 120', lx: 120, ly: 50 },
-                { id: 'q0-q1', type: 'forward', from: 'q0', to: 'q1', label: '0', edgeClass: 'q0-q1', d: 'M 170 150 L 270 150', lx: 220, ly: 140 },
-                { id: 'q1-q2', type: 'forward', from: 'q1', to: 'q2', label: '1', edgeClass: 'q1-q2', d: 'M 330 150 L 430 150', lx: 380, ly: 140 },
-                { id: 'q2-loop', type: 'loop', from: 'q2', to: 'q2', label: '0, 1', edgeClass: 'q2-loop', d: 'M 480 120 C 440 40, 520 40, 480 120', lx: 480, ly: 50 }
-            ]
-        }
-    },
-    'ends-11': {
-        name: 'Ends with "11"',
-        description: 'Nondeterministic Finite Automaton testing if a string ends with <strong>"11"</strong>.',
-        pattern: '[01]*',
-        logic: {
-            states: ['q0', 'q1', 'q2'],
-            startState: 'q0',
-            acceptStates: new Set(['q2']),
-            transitions: {
-                'q0': { '0': ['q0'], '1': ['q0', 'q1'] },
-                'q1': { '0': [], '1': ['q2'] },
-                'q2': { '0': [], '1': [] }
-            }
-        },
-        layout: {
-            nodes: [
-                { id: 'q0', x: 150, y: 150, title: 'q0', accept: false },
-                { id: 'q1', x: 300, y: 150, title: 'q1', accept: false },
-                { id: 'q2', x: 480, y: 150, title: 'q2', accept: true }
-            ],
-            edges: [
-                { id: 'entry', type: 'forward', from: null, to: 'q0', label: '', edgeClass: 'entry', d: 'M 50 150 L 100 150' },
-                { id: 'q0-loop', type: 'loop', from: 'q0', to: 'q0', label: '0, 1', edgeClass: 'q0-loop', d: 'M 120 120 C 80 40, 160 40, 120 120', lx: 120, ly: 50 },
-                { id: 'q0-q1', type: 'forward', from: 'q0', to: 'q1', label: '1', edgeClass: 'q0-q1', d: 'M 170 150 L 270 150', lx: 220, ly: 140 },
-                { id: 'q1-q2', type: 'forward', from: 'q1', to: 'q2', label: '1', edgeClass: 'q1-q2', d: 'M 330 150 L 430 150', lx: 380, ly: 140 }
-            ]
-        }
-    },
-    'even-zeros': {
-        name: 'Even number of 0s',
-        description: 'Finite Automaton that accepts binary strings with an <strong>Even number of zeroes</strong>.',
-        pattern: '[01]*',
-        logic: {
-            states: ['q0', 'q1'],
-            startState: 'q0',
-            acceptStates: new Set(['q0']),
-            transitions: {
-                'q0': { '0': ['q1'], '1': ['q0'] },
-                'q1': { '0': ['q0'], '1': ['q1'] }
-            }
-        },
-        layout: {
-            nodes: [
-                { id: 'q0', x: 200, y: 150, title: 'q0', accept: true },
-                { id: 'q1', x: 400, y: 150, title: 'q1', accept: false }
-            ],
-            edges: [
-                { id: 'entry', type: 'forward', from: null, to: 'q0', label: '', edgeClass: 'entry', d: 'M 100 150 L 150 150' },
-                { id: 'q0-loop', type: 'loop', from: 'q0', to: 'q0', label: '1', edgeClass: 'q0-loop', d: 'M 170 120 C 130 40, 210 40, 170 120', lx: 170, ly: 50 },
-                { id: 'q0-q1', type: 'forward', from: 'q0', to: 'q1', label: '0', edgeClass: 'q0-q1', d: 'M 220 130 Q 300 100 380 130', lx: 300, ly: 100 },
-                { id: 'q1-q0', type: 'forward', from: 'q1', to: 'q0', label: '0', edgeClass: 'q1-q0', d: 'M 380 170 Q 300 200 220 170', lx: 300, ly: 200 },
-                { id: 'q1-loop', type: 'loop', from: 'q1', to: 'q1', label: '1', edgeClass: 'q1-loop', d: 'M 370 120 C 330 40, 410 40, 370 120', lx: 370, ly: 50 }
-            ]
-        }
-    }
-};
-
 // DOM Elements
-const inputEl = document.getElementById('string-input');
-const btnPlay = document.getElementById('btn-play');
-const btnStep = document.getElementById('btn-step');
-const btnReset = document.getElementById('btn-reset');
-const tapeEl = document.getElementById('tape');
-const historyEl = document.getElementById('history');
-const statusEl = document.getElementById('final-status');
-const selectorEl = document.getElementById('example-selector');
-const descEl = document.getElementById('nfa-description');
-const svgLayer = document.getElementById('svg-layer');
-const nodesLayer = document.getElementById('nodes-layer');
+const transitionsContainer = document.getElementById('transition-rows');
+const btnAddTransition = document.getElementById('btn-add-transition');
+const btnBuild = document.getElementById('btn-build');
+const btnSimulate = document.getElementById('btn-simulate');
+const inputTestString = document.getElementById('test-string');
+const resultBox = document.getElementById('result-box');
+const graphContainer = document.getElementById('graph-container');
 
-// State Variables
-let currentNfaKey = 'contains-01';
-let currentNfa = nfaCollection[currentNfaKey];
-let currentString = "";
-let currentIndex = 0;
-let activeStates = new Set();
-let isPlaying = false;
-let playInterval = null;
-let simulationComplete = false;
-let historyRecords = []; // Tracks current session history
+// State
+let nfaData = null;
+let network = null;
 
-// Initialize
-switchNfa(currentNfaKey);
+// Add Transition Row
+btnAddTransition.addEventListener('click', () => {
+    const row = document.createElement('div');
+    row.className = 'transition-row';
+    row.innerHTML = `
+        <input type="text" class="t-from" placeholder="e.g. q0">
+        <input type="text" class="t-input" placeholder="e.g. a">
+        <input type="text" class="t-to" placeholder="e.g. q1">
+        <button class="btn-remove">X</button>
+    `;
 
-// Event Listeners
-selectorEl.addEventListener('change', (e) => {
-    switchNfa(e.target.value);
+    row.querySelector('.btn-remove').addEventListener('click', () => {
+        row.remove();
+    });
+
+    transitionsContainer.appendChild(row);
 });
 
-btnPlay.addEventListener('click', togglePlay);
-btnStep.addEventListener('click', () => {
-    if (!isPlaying && !simulationComplete) stepSimulation();
-});
-btnReset.addEventListener('click', resetSimulation);
-inputEl.addEventListener('input', (e) => {
-    // Only allow valid patterns (usually 01)
-    e.target.value = e.target.value.replace(/[^01]/g, '');
-    if (!isPlaying) {
-        currentString = e.target.value;
-        if (currentString.length === 0) {
-            btnPlay.disabled = true;
-            btnStep.disabled = true;
-        } else {
-            btnPlay.disabled = false;
-            btnStep.disabled = false;
-        }
-        renderTape();
-    }
-});
-inputEl.addEventListener('keypress', (e) => {
-    if (e.key === 'Enter') {
-        resetAndStartPlay();
-    }
+// Setup existing remove buttons
+document.querySelectorAll('.btn-remove').forEach(btn => {
+    btn.addEventListener('click', (e) => {
+        e.target.closest('.transition-row').remove();
+    });
 });
 
-function switchNfa(key) {
-    stopPlay();
-    currentNfaKey = key;
-    currentNfa = nfaCollection[key];
+// Build Automaton Builder
+btnBuild.addEventListener('click', () => {
+    // 1. Collect Data
+    const numStatesNum = parseInt(document.getElementById('num-states').value) || 0;
+    const startState = document.getElementById('start-state').value.trim();
+    const finalStatesRaw = document.getElementById('final-states').value;
 
-    // Update UI Text
-    descEl.innerHTML = currentNfa.description;
+    const finalStatesSet = new Set(
+        finalStatesRaw.split(',')
+            .map(s => s.trim())
+            .filter(s => s.length > 0)
+    );
 
-    // Clear history for new machine context
-    historyRecords = [];
-    renderHistory();
+    // Collect transitions
+    const rows = document.querySelectorAll('.transition-row');
+    const builtTransitions = []; // for graph
+    const nfaMap = {}; // for simulation
 
-    // Render Graph
-    buildGraph();
+    let hasErrors = false;
+    let validAlphabet = new Set();
+    let allMentionedStates = new Set();
 
-    // Reset Data
-    inputEl.value = '';
-    currentString = '';
-    btnPlay.disabled = true;
-    btnStep.disabled = true;
+    allMentionedStates.add(startState);
 
-    resetSimulation();
-}
+    rows.forEach(row => {
+        const from = row.querySelector('.t-from').value.trim();
+        const input = row.querySelector('.t-input').value.trim();
+        const to = row.querySelector('.t-to').value.trim();
 
-function buildGraph() {
-    // Clear Existing
-    const defs = `<defs>
-        <marker id="arrow" markerWidth="10" markerHeight="10" refX="28" refY="5" orient="auto-start-reverse">
-            <path d="M 0 0 L 10 5 L 0 10 z" fill="rgba(255,255,255,0.4)" />
-        </marker>
-        <marker id="arrow-active" markerWidth="10" markerHeight="10" refX="28" refY="5" orient="auto-start-reverse">
-            <path d="M 0 0 L 10 5 L 0 10 z" fill="#00f3ff" />
-        </marker>
-    </defs>`;
+        if (from && input && to) {
+            builtTransitions.push({ from, input, to });
 
-    let svgContent = defs;
-    let nodesContent = '';
+            // Build map structure: { 'q0': { 'a': ['q1', 'q2'] } }
+            if (!nfaMap[from]) nfaMap[from] = {};
+            if (!nfaMap[from][input]) nfaMap[from][input] = [];
 
-    // Build Edges
-    currentNfa.layout.edges.forEach(edge => {
-        let marker = edge.id === 'entry' ? 'url(#arrow)' : 'url(#arrow)';
-        svgContent += `
-            <path class="transition ${edge.edgeClass} edge-${edge.id}" d="${edge.d}" 
-                  stroke="rgba(255,255,255,0.2)" stroke-width="2" fill="transparent" 
-                  marker-end="${marker}" />
-        `;
-        if (edge.label) {
-            svgContent += `<text class="trans-label label-${edge.id}" x="${edge.lx}" y="${edge.ly}">${edge.label}</text>`;
-        }
-    });
-
-    // Build Nodes
-    currentNfa.layout.nodes.forEach(node => {
-        const acceptClass = node.accept ? 'accept-node' : '';
-        const innerCircle = node.accept ? '<div class="inner-circle"></div>' : '';
-        nodesContent += `
-            <div class="state-node ${acceptClass}" id="node-${node.id}" style="left: ${node.x}px; top: ${node.y}px;">
-                <span>${node.title}</span>
-                ${innerCircle}
-            </div>
-        `;
-    });
-
-    svgLayer.innerHTML = svgContent;
-    nodesLayer.innerHTML = nodesContent;
-}
-
-function addHistoryEntry(str, isAccepted) {
-    if (str.length === 0) return;
-    historyRecords.push({ str, isAccepted });
-    renderHistory();
-}
-
-function renderHistory() {
-    historyEl.innerHTML = '';
-    if (historyRecords.length === 0) {
-        historyEl.innerHTML = '<p class="history-entry system">No strings tested yet.</p>';
-        return;
-    }
-
-    historyRecords.forEach(record => {
-        const div = document.createElement('div');
-        div.className = 'history-entry';
-
-        const badgeClass = record.isAccepted ? 'accept' : 'reject';
-        const badgeText = record.isAccepted ? 'Accepted' : 'Rejected';
-
-        div.innerHTML = `
-            <span class="history-string">${record.str}</span>
-            <span class="history-badge ${badgeClass}">${badgeText}</span>
-        `;
-        historyEl.appendChild(div);
-    });
-    historyEl.scrollTop = historyEl.scrollHeight;
-}
-
-function renderTape() {
-    tapeEl.innerHTML = '';
-    for (let i = 0; i < currentString.length; i++) {
-        const div = document.createElement('div');
-        div.className = 'tape-cell';
-        div.textContent = currentString[i];
-        if (i < currentIndex) div.classList.add('processed');
-        if (i === currentIndex && !simulationComplete) div.classList.add('active');
-        tapeEl.appendChild(div);
-    }
-
-    const offset = -(currentIndex * 50) + 25;
-    tapeEl.style.transform = `translateX(-${currentIndex * 50 + 25}px)`;
-}
-
-function updateVisualNodes() {
-    document.querySelectorAll('.state-node').forEach(node => {
-        node.classList.remove('active', 'result-accept', 'result-reject');
-    });
-
-    document.querySelectorAll('.transition').forEach(t => {
-        t.classList.remove('active');
-        if (t.classList.contains('entry')) return;
-        t.setAttribute('marker-end', 'url(#arrow)');
-    });
-    document.querySelectorAll('.trans-label').forEach(l => l.classList.remove('active'));
-
-    activeStates.forEach(state => {
-        const node = document.getElementById(`node-${state}`);
-        if (node) node.classList.add('active');
-    });
-}
-
-function flashTransition(fromState, symbol, toStates) {
-    toStates.forEach(toState => {
-        const edge = currentNfa.layout.edges.find(e =>
-            e.from === fromState &&
-            e.to === toState &&
-            e.label.includes(symbol)
-        );
-
-        if (edge) {
-            highlightEdge(edge.id);
-        }
-    });
-}
-
-function highlightEdge(edgeId) {
-    const el = document.querySelector(`.edge-${edgeId}`);
-    if (el) {
-        el.classList.add('active');
-        el.setAttribute('marker-end', 'url(#arrow-active)');
-
-        const label = document.querySelector(`.label-${edgeId}`);
-        if (label) {
-            label.classList.add('active');
-        }
-    }
-}
-
-function resetSimulation() {
-    stopPlay();
-    currentString = inputEl.value;
-    currentIndex = 0;
-    activeStates = new Set([currentNfa.logic.startState]);
-    simulationComplete = false;
-
-    statusEl.textContent = 'Awaiting Input...';
-    statusEl.className = '';
-
-    btnStep.disabled = currentString.length === 0;
-    btnPlay.disabled = currentString.length === 0;
-    inputEl.disabled = false;
-
-    renderTape();
-    updateVisualNodes();
-}
-
-function resetAndStartPlay() {
-    if (currentString.length > 0) {
-        resetSimulation();
-        togglePlay();
-    }
-}
-
-function togglePlay() {
-    if (!currentString) return;
-
-    if (isPlaying) {
-        stopPlay();
-    } else {
-        if (simulationComplete) resetSimulation();
-        isPlaying = true;
-        btnPlay.textContent = 'Pause';
-        btnPlay.classList.replace('primary-btn', 'secondary-btn');
-        inputEl.disabled = true;
-        btnStep.disabled = true;
-
-        playInterval = setInterval(() => {
-            stepSimulation();
-        }, 1000);
-    }
-}
-
-function stopPlay() {
-    isPlaying = false;
-    clearInterval(playInterval);
-    btnPlay.textContent = 'Simulate';
-    btnPlay.classList.replace('secondary-btn', 'primary-btn');
-    btnStep.disabled = simulationComplete || currentString.length === 0;
-}
-
-function stepSimulation() {
-    if (currentIndex >= currentString.length) {
-        finishSimulation();
-        return;
-    }
-
-    const symbol = currentString[currentIndex];
-    const newActiveStates = new Set();
-
-    document.querySelectorAll('.transition').forEach(t => t.classList.remove('active'));
-
-    activeStates.forEach(state => {
-        const transitionsMap = currentNfa.logic.transitions[state];
-        if (transitionsMap && transitionsMap[symbol]) {
-            const nextStates = transitionsMap[symbol];
-            flashTransition(state, symbol, nextStates);
-            for (let nextState of nextStates) {
-                newActiveStates.add(nextState);
+            if (!nfaMap[from][input].includes(to)) {
+                nfaMap[from][input].push(to);
             }
+
+            validAlphabet.add(input);
+            allMentionedStates.add(from);
+            allMentionedStates.add(to);
         }
     });
 
-    activeStates = newActiveStates;
-    currentIndex++;
-    renderTape();
+    if (numStatesNum <= 0 || !startState) {
+        showResult('Please specify valid number of states and an initial state.', 'error');
+        return;
+    }
 
-    setTimeout(() => {
-        updateVisualNodes();
+    nfaData = {
+        startState,
+        finalStates: finalStatesSet,
+        map: nfaMap
+    };
+
+    showResult('Automaton built successfully!', 'success');
+
+    // 2. Draw Graph using vis-network
+    drawGraph(allMentionedStates, finalStatesSet, builtTransitions);
+});
+
+function drawGraph(statesSet, finalsSet, links) {
+    if (network !== null) {
+        network.destroy();
+        network = null;
+    }
+
+    const nodesData = [];
+    statesSet.forEach(s => {
+        let isFinal = finalsSet.has(s);
+        let isStart = (s === nfaData.startState);
+
+        let colorObj = {
+            background: "#161b22",
+            border: "#388bfd",
+            highlight: { background: "#1f6feb", border: "#58a6ff" }
+        };
+
+        if (isFinal) {
+            colorObj.border = "#3fb950";
+            colorObj.background = "#161b22";
+            colorObj.highlight.border = "#56d364";
+            colorObj.highlight.background = "#2ea043";
+        }
+
+        let label = s;
+        if (isStart) {
+            label = "→ " + s;
+        }
+
+        nodesData.push({
+            id: s,
+            label: label,
+            color: colorObj,
+            font: { color: "#c9d1d9", face: 'Inter', size: 16 },
+            borderWidth: isFinal ? 3 : 2,
+            shape: isFinal ? 'circle' : 'ellipse'
+        });
+    });
+
+    const combinedLinks = {};
+    links.forEach(l => {
+        let key = l.from + '-' + l.to;
+        if (combinedLinks[key]) {
+            let existingLabels = combinedLinks[key].label.split(',').map(s => s.trim());
+            if (!existingLabels.includes(l.input)) {
+                combinedLinks[key].label += ', ' + l.input;
+            }
+        } else {
+            combinedLinks[key] = {
+                from: l.from,
+                to: l.to,
+                label: l.input
+            };
+        }
+    });
+
+    const edgesData = Object.values(combinedLinks).map(l => ({
+        from: l.from,
+        to: l.to,
+        label: l.label,
+        font: { color: "#c9d1d9", size: 14, align: 'top', face: 'Inter', background: 'rgba(13, 17, 23, 0.8)' },
+        arrows: {
+            to: { enabled: true, scaleFactor: 0.8 }
+        },
+        color: { color: '#8b949e', highlight: '#58a6ff' },
+        smooth: { type: 'dynamic' },
+        width: 1.5,
+        selectionWidth: 2
+    }));
+
+    const data = {
+        nodes: new vis.DataSet(nodesData),
+        edges: new vis.DataSet(edgesData)
+    };
+
+    const options = {
+        physics: {
+            enabled: true,
+            barnesHut: { springLength: 150 },
+            stabilization: {
+                enabled: true,
+                iterations: 200
+            }
+        },
+        interaction: {
+            dragNodes: false,
+            dragView: false,
+            hover: true,
+            zoomView: false
+        },
+        edges: {
+            smooth: true
+        }
+    };
+
+    network = new vis.Network(graphContainer, data, options);
+
+    network.on("stabilizationIterationsDone", function () {
+        network.setOptions({ physics: false });
+    });
+}
+
+// Helper to delay execution
+const sleep = ms => new Promise(resolve => setTimeout(resolve, ms));
+
+// Simulator with Step-by-Step UI
+btnSimulate.addEventListener('click', async () => {
+    if (!nfaData) {
+        showResult('Please build the automaton first.', 'error');
+        return;
+    }
+
+    const str = inputTestString.value.trim();
+    btnSimulate.disabled = true;
+
+    // Function to compute Epsilon Closure
+    function getEpsilonClosure(states) {
+        let stack = Array.from(states);
+        let closure = new Set(states);
+
+        while (stack.length > 0) {
+            let state = stack.pop();
+            ['e', 'ε'].forEach(eps => {
+                if (nfaData.map[state] && nfaData.map[state][eps]) {
+                    nfaData.map[state][eps].forEach(ns => {
+                        if (!closure.has(ns)) {
+                            closure.add(ns);
+                            stack.push(ns);
+                        }
+                    });
+                }
+            });
+        }
+        return closure;
+    }
+
+    function highlightStates(states) {
+        if (!network || !network.body.data.nodes) return;
+        const nodesData = network.body.data.nodes;
+        const updates = [];
+        
+        nodesData.forEach(node => {
+            const isFinal = nfaData.finalStates.has(node.id);
+            const isActive = states.has(node.id);
+            
+            let colorObj = {
+                background: "#161b22",
+                border: "#388bfd",
+                highlight: { background: "#1f6feb", border: "#58a6ff" }
+            };
+            
+            if (isFinal) {
+                colorObj.border = "#3fb950";
+                colorObj.background = "#161b22";
+                colorObj.highlight.border = "#56d364";
+                colorObj.highlight.background = "#2ea043";
+            }
+            
+            if (isActive) {
+                colorObj.border = "#f2cc60"; // Gold color for active states
+                colorObj.background = "#d29922";
+                
+                if (isFinal) {
+                    colorObj.border = "#5ee871"; // Brighter green when an active state is final
+                    colorObj.background = "#3fb950";
+                }
+            }
+
+            updates.push({
+                id: node.id,
+                color: colorObj,
+                borderWidth: isActive ? 4 : (isFinal ? 3 : 2),
+                font: { color: isActive ? "#ffffff" : "#c9d1d9", face: 'Inter', size: 16 }
+            });
+        });
+        nodesData.update(updates);
+    }
+
+    let activeStates = getEpsilonClosure(new Set([nfaData.startState]));
+    showResult(`Initialization: Starting at ${Array.from(activeStates).join(', ')}`, 'neutral');
+    highlightStates(activeStates);
+    await sleep(800);
+
+    // NFA Evaluation - Step by step
+    for (let i = 0; i < str.length; i++) {
+        const symbol = str[i];
+        
+        let nextStates = new Set();
+        activeStates.forEach(state => {
+            if (nfaData.map[state] && nfaData.map[state][symbol]) {
+                nfaData.map[state][symbol].forEach(ns => nextStates.add(ns));
+            }
+        });
+
+        activeStates = getEpsilonClosure(nextStates);
+        
+        // Update UI
+        showResult(`Consuming '${symbol}': Moving to ${Array.from(activeStates).join(', ')}`, 'neutral');
+        highlightStates(activeStates);
+        await sleep(800);
 
         if (activeStates.size === 0) {
-            finishSimulation();
-        } else {
-            if (currentIndex >= currentString.length) {
-                finishSimulation();
-            }
+            break; // No further valid paths
         }
-    }, 400);
-}
+    }
 
-function finishSimulation() {
-    stopPlay();
-    simulationComplete = true;
-    inputEl.disabled = false;
-    btnStep.disabled = true;
-
-    renderTape();
-
+    // Check acceptance
     let isAccepted = false;
-    activeStates.forEach(state => {
-        if (currentNfa.logic.acceptStates.has(state)) {
+    activeStates.forEach(s => {
+        if (nfaData.finalStates.has(s)) {
             isAccepted = true;
         }
     });
 
     if (isAccepted) {
-        statusEl.textContent = 'String Accepted!';
-        statusEl.className = 'status-accept';
-
-        activeStates.forEach(state => {
-            const node = document.getElementById(`node-${state}`);
-            if (currentNfa.logic.acceptStates.has(state)) {
-                node.classList.add('result-accept');
-            }
-        });
+        showResult(`String "${str}" is ACCEPTED. Ended in state(s): ${Array.from(activeStates).join(', ')}`, 'success');
     } else {
-        statusEl.textContent = 'String Rejected!';
-        statusEl.className = 'status-reject';
-
-        activeStates.forEach(state => {
-            const node = document.getElementById(`node-${state}`);
-            if (node) node.classList.add('result-reject');
-        });
+        showResult(`String "${str}" is REJECTED. Ended in state(s): ${Array.from(activeStates).join(', ') || 'NONE'}`, 'error');
     }
 
-    // Add to history
-    addHistoryEntry(currentString, isAccepted);
+    btnSimulate.disabled = false;
+});
+
+function showResult(msg, type) {
+    resultBox.innerHTML = msg;
+    resultBox.className = 'result-display';
+
+    if (type === 'success') {
+        resultBox.classList.add('result-success');
+    } else if (type === 'error') {
+        resultBox.classList.add('result-error');
+    } else {
+        resultBox.classList.add('result-neutral');
+    }
 }
