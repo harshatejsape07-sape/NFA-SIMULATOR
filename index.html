@@ -1,0 +1,104 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>NFA Simulator</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="style.css">
+    <!-- vis.js for graph rendering -->
+    <script type="text/javascript" src="https://unpkg.com/vis-network/standalone/umd/vis-network.min.js"></script>
+</head>
+
+<body>
+    <div class="app-wrapper">
+        <header class="main-header">
+            <h1>NFA Simulator</h1>
+        </header>
+
+        <!-- Top Panel: Graph -->
+        <div class="panel graph-section">
+            <div class="panel-header-wrap">
+                <h2 class="panel-title">NFA Visualization</h2>
+            </div>
+            <div id="graph-container" class="graph-display">
+                <span class="placeholder-text">Build the automaton to view graph</span>
+            </div>
+        </div>
+
+        <div class="bottom-layout">
+            <!-- Left Panel: Definition -->
+            <div class="panel define-section">
+                <div class="panel-header-wrap">
+                    <h2 class="panel-title">Automaton Configuration</h2>
+                </div>
+
+                <div class="inline-forms">
+                    <div class="form-group">
+                        <label for="num-states">Number of States</label>
+                        <input type="number" id="num-states" value="3" min="1">
+                        <span class="hint">E.g., q0, q1...</span>
+                    </div>
+                    <div class="form-group">
+                        <label for="start-state">Initial State</label>
+                        <input type="text" id="start-state" value="q0">
+                    </div>
+                    <div class="form-group">
+                        <label for="final-states">Final States</label>
+                        <input type="text" id="final-states" value="q2" placeholder="Comma separated">
+                    </div>
+                </div>
+
+                <div class="transitions-block">
+                    <div class="trans-header">
+                        <h3>Transitions List</h3>
+                        <span class="eps-hint">Use 'e' or 'ε' for Epsilon</span>
+                    </div>
+                    <div class="grid-headers">
+                        <span>Current</span>
+                        <span>Input</span>
+                        <span>Next</span>
+                        <span>Action</span>
+                    </div>
+                    <div id="transition-rows">
+                        <div class="transition-row">
+                            <input type="text" class="t-from" value="q0">
+                            <input type="text" class="t-input" value="a">
+                            <input type="text" class="t-to" value="q1">
+                            <button class="btn-remove" title="Remove">×</button>
+                        </div>
+                    </div>
+                    <button id="btn-add-transition" class="btn-outline">Add New Transition</button>
+                </div>
+
+                <button id="btn-build" class="btn-primary build-btn">Rebuild NFA</button>
+            </div>
+
+            <!-- Right Panel: Testing -->
+            <div class="panel test-section">
+                <div class="panel-header-wrap">
+                    <h2 class="panel-title">Test Runner</h2>
+                </div>
+
+                <div class="test-controls">
+                    <label for="test-string">Enter Test String:</label>
+                    <div class="input-group">
+                        <input type="text" id="test-string" placeholder="e.g. abaa">
+                        <button id="btn-simulate" class="btn-primary">Verify</button>
+                    </div>
+                </div>
+
+                <div id="result-box" class="result-display empty">
+                    Ready to test strings.
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <script src="app.js"></script>
+</body>
+
+</html>
