@@ -1,15 +1,23 @@
-// DOM Elements
-const transitionsContainer = document.getElementById('transition-rows');
-const btnAddTransition = document.getElementById('btn-add-transition');
-const btnBuild = document.getElementById('btn-build');
-const btnSimulate = document.getElementById('btn-simulate');
-const inputTestString = document.getElementById('test-string');
-const resultBox = document.getElementById('result-box');
-const graphContainer = document.getElementById('graph-container');
+window.addEventListener('DOMContentLoaded', () => {
+    console.log("NFA Simulator: Initializing...");
 
-// State
-let nfaData = null;
-let network = null;
+    // DOM Elements
+    const transitionsContainer = document.getElementById('transition-rows');
+    const btnAddTransition = document.getElementById('btn-add-transition');
+    const btnBuild = document.getElementById('btn-build');
+    const btnSimulate = document.getElementById('btn-simulate');
+    const inputTestString = document.getElementById('test-string');
+    const resultBox = document.getElementById('result-box');
+    const graphContainer = document.getElementById('graph-container');
+
+    // State
+    let nfaData = null;
+    let network = null;
+
+    if (!btnAddTransition || !btnBuild || !btnSimulate) {
+        console.error("NFA Simulator: One or more critical UI elements not found!");
+        return;
+    }
 
 // Add Transition Row
 btnAddTransition.addEventListener('click', () => {
@@ -99,107 +107,119 @@ btnBuild.addEventListener('click', () => {
     drawGraph(allMentionedStates, finalStatesSet, builtTransitions);
 });
 
-function drawGraph(statesSet, finalsSet, links) {
-    if (network !== null) {
-        network.destroy();
-        network = null;
-    }
-
-    const nodesData = [];
-    statesSet.forEach(s => {
-        let isFinal = finalsSet.has(s);
-        let isStart = (s === nfaData.startState);
-
-        let colorObj = {
-            background: "#161b22",
-            border: "#388bfd",
-            highlight: { background: "#1f6feb", border: "#58a6ff" }
-        };
-
-        if (isFinal) {
-            colorObj.border = "#3fb950";
-            colorObj.background = "#161b22";
-            colorObj.highlight.border = "#56d364";
-            colorObj.highlight.background = "#2ea043";
+    function drawGraph(statesSet, finalsSet, links) {
+        // Check if vis library is loaded
+        if (typeof vis === 'undefined') {
+            console.error("vis-network library is not loaded! Try refreshing the page.");
+            showResult('Error: Visualization library (vis.js) failed to load. Please check your internet connection.', 'error');
+            return;
         }
 
-        let label = s;
-        if (isStart) {
-            label = "→ " + s;
+        if (network !== null) {
+            network.destroy();
+            network = null;
         }
 
-        nodesData.push({
-            id: s,
-            label: label,
-            color: colorObj,
-            font: { color: "#c9d1d9", face: 'Inter', size: 16 },
-            borderWidth: isFinal ? 3 : 2,
-            shape: isFinal ? 'circle' : 'ellipse'
-        });
-    });
+        const nodesData = [];
+        statesSet.forEach(s => {
+            let isFinal = finalsSet.has(s);
+            let isStart = (s === nfaData.startState);
 
-    const combinedLinks = {};
-    links.forEach(l => {
-        let key = l.from + '-' + l.to;
-        if (combinedLinks[key]) {
-            let existingLabels = combinedLinks[key].label.split(',').map(s => s.trim());
-            if (!existingLabels.includes(l.input)) {
-                combinedLinks[key].label += ', ' + l.input;
-            }
-        } else {
-            combinedLinks[key] = {
-                from: l.from,
-                to: l.to,
-                label: l.input
+            let colorObj = {
+                background: "#161b22",
+                border: "#388bfd",
+                highlight: { background: "#1f6feb", border: "#58a6ff" }
             };
-        }
-    });
 
-    const edgesData = Object.values(combinedLinks).map(l => ({
-        from: l.from,
-        to: l.to,
-        label: l.label,
-        font: { color: "#c9d1d9", size: 14, align: 'top', face: 'Inter', background: 'rgba(13, 17, 23, 0.8)' },
-        arrows: {
-            to: { enabled: true, scaleFactor: 0.8 }
-        },
-        color: { color: '#8b949e', highlight: '#58a6ff' },
-        smooth: { type: 'dynamic' },
-        width: 1.5,
-        selectionWidth: 2
-    }));
-
-    const data = {
-        nodes: new vis.DataSet(nodesData),
-        edges: new vis.DataSet(edgesData)
-    };
-
-    const options = {
-        physics: {
-            enabled: true,
-            barnesHut: { springLength: 150 },
-            stabilization: {
-                enabled: true,
-                iterations: 200
+            if (isFinal) {
+                colorObj.border = "#3fb950";
+                colorObj.background = "#161b22";
+                colorObj.highlight.border = "#56d364";
+                colorObj.highlight.background = "#2ea043";
             }
-        },
-        interaction: {
-            dragNodes: false,
-            dragView: false,
-            hover: true,
-            zoomView: false
-        },
-        edges: {
-            smooth: true
+
+            let label = s;
+            if (isStart) {
+                label = "→ " + s;
+            }
+
+            nodesData.push({
+                id: s,
+                label: label,
+                color: colorObj,
+                font: { color: "#c9d1d9", face: 'Inter', size: 16 },
+                borderWidth: isFinal ? 3 : 2,
+                shape: isFinal ? 'circle' : 'ellipse'
+            });
+        });
+
+        const combinedLinks = {};
+        links.forEach(l => {
+            let key = l.from + '-' + l.to;
+            if (combinedLinks[key]) {
+                let existingLabels = combinedLinks[key].label.split(',').map(s => s.trim());
+                if (!existingLabels.includes(l.input)) {
+                    combinedLinks[key].label += ', ' + l.input;
+                }
+            } else {
+                combinedLinks[key] = {
+                    from: l.from,
+                    to: l.to,
+                    label: l.input
+                };
+            }
+        });
+
+        const edgesData = Object.values(combinedLinks).map(l => ({
+            from: l.from,
+            to: l.to,
+            label: l.label,
+            font: { color: "#c9d1d9", size: 14, align: 'top', face: 'Inter', background: 'rgba(13, 17, 23, 0.8)' },
+            arrows: {
+                to: { enabled: true, scaleFactor: 0.8 }
+            },
+            color: { color: '#8b949e', highlight: '#58a6ff' },
+            smooth: { type: 'dynamic' },
+            width: 1.5,
+            selectionWidth: 2
+        }));
+
+        try {
+            const data = {
+                nodes: new vis.DataSet(nodesData),
+                edges: new vis.DataSet(edgesData)
+            };
+
+            const options = {
+                physics: {
+                    enabled: true,
+                    barnesHut: { springLength: 150 },
+                    stabilization: {
+                        enabled: true,
+                        iterations: 200
+                    }
+                },
+                interaction: {
+                    dragNodes: false,
+                    dragView: false,
+                    hover: true,
+                    zoomView: false
+                },
+                edges: {
+                    smooth: true
+                }
+            };
+
+            network = new vis.Network(graphContainer, data, options);
+
+            network.on("stabilizationIterationsDone", function () {
+                network.setOptions({ physics: false });
+            });
+        } catch (err) {
+            console.error("Error creating network graph:", err);
+            showResult('Error rendering graph. Check browser console.', 'error');
         }
-    };
-
-    network = new vis.Network(graphContainer, data, options);
-
-    network.on("stabilizationIterationsDone", function () {
-        network.setOptions({ physics: false });
-    });
-}
+    }
 
 // Helper to delay execution
 const sleep = ms => new Promise(resolve => setTimeout(resolve, ms));
@@ -322,15 +342,18 @@ btnSimulate.addEventListener('click', async () => {
     btnSimulate.disabled = false;
 });
 
-function showResult(msg, type) {
-    resultBox.innerHTML = msg;
-    resultBox.className = 'result-display';
+    function showResult(msg, type) {
+        resultBox.innerHTML = msg;
+        resultBox.className = 'result-display';
 
-    if (type === 'success') {
-        resultBox.classList.add('result-success');
-    } else if (type === 'error') {
-        resultBox.classList.add('result-error');
-    } else {
-        resultBox.classList.add('result-neutral');
+        if (type === 'success') {
+            resultBox.classList.add('result-success');
+        } else if (type === 'error') {
+            resultBox.classList.add('result-error');
+        } else {
+            resultBox.classList.add('result-neutral');
+        }
     }
-}
+
+    console.log("NFA Simulator: Ready.");
+});
